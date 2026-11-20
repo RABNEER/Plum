@@ -1,0 +1,89 @@
+PLUM | REAL REPOSITORY REGRESSION
+Click issue #3298: help rendering with a non-string-comparable default
+The test file comes from the fix. Both runs execute those same upstream tests.
+Issue: https://github.com/pallets/click/issues/3298
+Fix and regression test: https://github.com/pallets/click/pull/3299/files
+
+CLICK BEFORE | 04ef3a6f473deb2499721a8d11f92a7d2c0912f2
+Targeted regression | exit 1
+Click source: <workspace>\click-04ef3a6f473deb2499721a8d11f92a7d2c0912f2\src\click\__init__.py
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_show_default_with_empty_string[non-string-comparable-object] ______
+tests\test_options.py:1290: in test_show_default_with_empty_string
+    message = opt.get_help_record(ctx)[1]
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+..\click-04ef3a6f473deb2499721a8d11f92a7d2c0912f2\src\click\core.py:3033: in get_help_record
+    extra = self.get_help_extra(ctx)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+..\click-04ef3a6f473deb2499721a8d11f92a7d2c0912f2\src\click\core.py:3113: in get_help_extra
+    elif default_value == "":
+         ^^^^^^^^^^^^^^^^^^^
+tests\test_options.py:1267: in __eq__
+    raise ValueError("cannot compare to string")
+E   ValueError: cannot compare to string
+=========================== short test summary info ===========================
+FAILED tests/test_options.py::test_show_default_with_empty_string[non-string-comparable-object]
+1 failed in 0.53s
+Nine other upstream tests | exit 0
+Click source: <workspace>\click-04ef3a6f473deb2499721a8d11f92a7d2c0912f2\src\click\__init__.py
+.........                                                                [100%]
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/test_options.py::test_prefixes
+PASSED tests/test_options.py::test_invalid_option
+PASSED tests/test_options.py::test_deprecated_required
+PASSED tests/test_options.py::test_deprecated_prompt
+PASSED tests/test_options.py::test_invalid_nargs
+PASSED tests/test_options.py::test_nargs_tup_composite_mult
+PASSED tests/test_options.py::test_counting
+PASSED tests/test_options.py::test_multiple_required
+PASSED tests/test_options.py::test_show_default_string
+9 passed in 0.18s
+Passing spot check | exit 0
+Click source: <workspace>\click-04ef3a6f473deb2499721a8d11f92a7d2c0912f2\src\click\__init__.py
+.                                                                        [100%]
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/test_options.py::test_show_default_with_empty_string[empty-string]
+1 passed in 0.12s
+
+CLICK AFTER | d340b0c1202284a1b9d0ca892549208527d586ce
+Targeted regression | exit 0
+Click source: <workspace>\click-d340b0c1202284a1b9d0ca892549208527d586ce\src\click\__init__.py
+.                                                                        [100%]
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/test_options.py::test_show_default_with_empty_string[non-string-comparable-object]
+1 passed in 0.06s
+Nine other upstream tests | exit 0
+Click source: <workspace>\click-d340b0c1202284a1b9d0ca892549208527d586ce\src\click\__init__.py
+.........                                                                [100%]
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/test_options.py::test_prefixes
+PASSED tests/test_options.py::test_invalid_option
+PASSED tests/test_options.py::test_deprecated_required
+PASSED tests/test_options.py::test_deprecated_prompt
+PASSED tests/test_options.py::test_invalid_nargs
+PASSED tests/test_options.py::test_nargs_tup_composite_mult
+PASSED tests/test_options.py::test_counting
+PASSED tests/test_options.py::test_multiple_required
+PASSED tests/test_options.py::test_show_default_string
+9 passed in 0.12s
+Passing spot check | exit 0
+Click source: <workspace>\click-d340b0c1202284a1b9d0ca892549208527d586ce\src\click\__init__.py
+.                                                                        [100%]
+=================================== PASSES ====================================
+=========================== short test summary info ===========================
+PASSED tests/test_options.py::test_show_default_with_empty_string[empty-string]
+1 passed in 0.08s
+
+AT THE STAGED COMPLETION CLAIM
+Click revision         Full regression   Plum    Last 8    Latest check
+Before 04ef3a6          FAIL        24.8%    77.3%    75.0%
+After  d340b0c          PASS        96.5%    77.3%    75.0%
+
+Same last-eight-event inputs and equivalent latest spot checks in both runs.
+Plum consumed mapped test outcomes, using the existing checkpoint.
+The completion request was staged. The test executions and code revisions were real.
