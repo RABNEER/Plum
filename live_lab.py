@@ -152,9 +152,9 @@ class Lab:
 
     def claim(self):
         self.sync_revision()
-        reading = self.feed(CLAIM, "Completion claim")
-        if reading.plum >= .85:
-            self.message = "Plum: evidence supports this regression requirement."
+        self.feed(CLAIM, "Completion claim")
+        if self.observed == {"Passed"}:
+            self.message = "Plum: full regression verified for this revision."
         else:
             self.message = "Plum: verify the regression before closing."
 

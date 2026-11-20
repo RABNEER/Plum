@@ -16,10 +16,10 @@ def demo():
     for full_check, label in (("strong_fail", "Failed"), ("strong_pass", "Passed")):
         plum = Plum()
         plum.feed("revision", "regression")
-        plum.feed(full_check, "regression")
+        plum.feed(full_check, "regression", evidence_id="original-regression")
         for _ in range(9):
             plum.feed("noise")
-        plum.feed("spot_pass", "regression")
+        plum.feed("spot_pass", "regression", evidence_id="spot-check")
         plum.feed("claim")
         print(f"Earlier full check {label:6} | latest spot check passed | Plum {plum.query('regression'):.1%}")
 
@@ -34,12 +34,14 @@ def score(source):
             try:
                 item = json.loads(line)
                 if (not isinstance(item, dict) or not isinstance(item.get("kind"), str)
-                        or set(item) - {"kind", "channel"}):
-                    raise ValueError("Expected an object with kind and optional channel")
-                plum.feed(item["kind"], item.get("channel"))
+                        or set(item) - {"kind", "channel", "evidence_id", "reliability"}):
+                    raise ValueError("Expected kind and optional channel, evidence_id and reliability")
+                plum.feed(**item)
             except ValueError as error:
                 raise ValueError(f"Line {index}: {error}") from error
-            print(json.dumps({"line": index, "beliefs": plum.beliefs()}), flush=True)
+            beliefs = plum.beliefs()
+            print(json.dumps({"line": index, "beliefs": beliefs,
+                              "ready": {channel: plum.ready(channel) for channel in beliefs}}), flush=True)
 
 
 def main():

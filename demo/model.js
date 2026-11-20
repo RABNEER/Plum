@@ -6,24 +6,67 @@ class BeliefSession {
     this.weights = weights;
     this.hidden = weights.channels.map(() => new Array(weights.report.hidden_per_channel).fill(0));
     this.recent = [];
-    this.logOdds = weights.channels.map(() => 0);
+    this.counts = weights.channels.map(() => new Map());
+    this.seen = weights.channels.map(() => new Map());
+    this.fullPass = weights.channels.map(() => false);
+    this.blocked = weights.channels.map(() => false);
   }
 
   static sigmoid(value) {
     return 1 / (1 + Math.exp(-value));
   }
 
-  feed(token) {
+  feed(token, {evidenceId, reliability} = {}) {
+    if (!Number.isInteger(token) || token < 0 || token >= this.weights.events) {
+      throw new Error("Unknown event token");
+    }
+    const kinds = this.weights.kinds.length;
+    const channel = Math.floor(token / kinds);
+    const kind = token % kinds;
+    const check = token < this.weights.claim && kind > 0;
+    if (!check && (evidenceId !== undefined || reliability !== undefined)) {
+      throw new Error("Only check results take an evidence ID or reliability");
+    }
+    if (check) {
+      const full = kind <= 2;
+      const rate = reliability === undefined ? (full ? .90 : .75) : reliability;
+      if (!Number.isFinite(rate) || rate < .5 || rate >= 1) {
+        throw new Error("Reliability must be a number in [0.5, 1)");
+      }
+      if (evidenceId !== undefined) {
+        if (typeof evidenceId !== "string" || !evidenceId.trim()) {
+          throw new Error("Evidence ID must be a non-empty string");
+        }
+        const prior = this.seen[channel].get(evidenceId);
+        if (prior) {
+          if (prior.kind !== kind || prior.rate !== rate) {
+            this.blocked[channel] = true;
+            throw new Error("Conflicting result for an existing evidence ID");
+          }
+          return false;
+        }
+        this.seen[channel].set(evidenceId, {kind, rate});
+      }
+      const counts = this.counts[channel];
+      counts.set(rate, (counts.get(rate) ?? 0) + (kind % 2 ? 1 : -1));
+      if (kind === 2) this.blocked[channel] = true;
+      if (kind === 1 && evidenceId !== undefined && rate > .5) this.fullPass[channel] = true;
+    }
+
     this.recent.push(token);
     if (this.recent.length > this.weights.report.window) this.recent.shift();
     if (token < this.weights.claim) {
-      const kinds = this.weights.kinds.length;
-      const channel = Math.floor(token / kinds);
-      const kind = token % kinds;
-      if (kind === 0) this.hidden[channel].fill(0);
-      else this.hidden[channel] = this.updateChannel(this.hidden[channel], kind - 1);
-      this.logOdds[channel] = kind === 0 ? 0 : this.logOdds[channel] + this.weights.logOdds[kind];
+      if (kind === 0) {
+        this.hidden[channel].fill(0);
+        this.counts[channel].clear();
+        this.seen[channel].clear();
+        this.fullPass[channel] = false;
+        this.blocked[channel] = false;
+      } else {
+        this.hidden[channel] = this.updateChannel(this.hidden[channel], kind - 1);
+      }
     }
+    return true;
   }
 
   updateChannel(before, evidence) {
@@ -52,10 +95,14 @@ class BeliefSession {
       (sum, token, position) => sum + row[(offset + position) * events + token], baseline["net.0.bias"][index])));
     const windowResult = baseline["net.2.weight"].map((row, channel) => sigmoid(row.reduce(
       (sum, weight, index) => sum + weight * layer[index], baseline["net.2.bias"][channel])));
+    const evidence = this.counts.map(counts => sigmoid([...counts.keys()].sort((a, b) => a - b)
+      .reduce((sum, rate) => sum + counts.get(rate) * (Math.log(rate) - Math.log1p(-rate)), 0)));
     return {
       sbm: sbmResult,
       window: windowResult,
-      oracle: this.logOdds.map(sigmoid),
+      oracle: evidence,
+      ready: evidence.map((score, channel) => this.fullPass[channel] && !this.blocked[channel] && score >= .85),
+      blocked: [...this.blocked],
     };
   }
 }

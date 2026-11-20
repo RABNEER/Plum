@@ -1,6 +1,6 @@
 # Plum model card
 
-Plum estimates whether a requirement passes from a stream of typed evidence. It runs offline in Python with bundled weights.
+Plum estimates whether a requirement passes from a stream of typed evidence. Its evidence posterior combines identified checks using supplied reliability rates. Readiness requires an identified full pass, no full failure on the revision, and a probability of at least 85%. The original learned GRU runs alongside the posterior as a comparison. The training and evaluation below describe that GRU.
 
 - **Model** A GRU cell and readout shared across four requirement channels. Plum has 660 trainable parameters and 48 recurrent state values.
 - **Input** Revisions, full check results, spot check results, and irrelevant events. The caller assigns event types and channels before inference.

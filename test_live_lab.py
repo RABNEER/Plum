@@ -43,7 +43,7 @@ class LiveEvidenceTest(unittest.TestCase):
         self.assertLess(broken.plum, .40)
         self.assertGreaterEqual(fixed.plum, .85)
         self.assertIn("verify", broken_verdict)
-        self.assertIn("supports", fixed_verdict)
+        self.assertIn("full regression verified", fixed_verdict)
         print("\nEarlier full regression   Plum    Last 8 events   Latest check")
         for name, reading in (("Failed", broken), ("Passed", fixed)):
             print(f"{name:<26} {reading.plum:>6.1%} {reading.window:>15.1%} {latest_check_score:>14.1%}")

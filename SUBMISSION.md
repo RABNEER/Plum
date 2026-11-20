@@ -2,15 +2,13 @@
 
 **Ten checks passed. One regression was still broken.** We ran [Click’s own regression test](https://github.com/pallets/click/pull/3299/files) before and after the maintainer’s fix. It failed before the fix and passed after it, even though both runs ended with the same ten passing checks.
 
-**At the staged completion claim, Plum gave the original regression a 24.8% chance of passing before the fix and a 96.5% chance after it.** Both baselines gave identical scores across the two revisions. [See the actual pytest output](https://github.com/RABNEER/Plum/blob/main/submission/Plum-Click-Test.txt)
+**At the staged completion claim, Plum’s original GRU gave the regression a 24.8% chance of passing before the fix and a 96.5% chance after it.** Both baselines gave identical scores across the two revisions. [See the actual pytest output](https://github.com/RABNEER/Plum/blob/main/submission/Plum-Click-Test.txt)
 
 ![Click’s actual test fails before the fix and passes after it. Plum scores the two histories 24.8% and 96.5%.](https://raw.githubusercontent.com/RABNEER/Plum/main/submission/Plum-Click-Evidence.png)
 
 Plum is an Avadhanam-inspired stateful model that tracks test evidence and flags when a coding agent’s completion claim needs another check.
 
-[Try the live Plum demo](https://plum-sbm-demo.vercel.app/) · [Install from PyPI](https://pypi.org/project/plum-sbm/)
-
-Run `pip install plum-sbm` and then `plum demo` to try the bundled model offline.
+[Try the live Plum demo](https://plum-sbm-demo.vercel.app/) · [Install the current package from source](https://github.com/RABNEER/Plum#try-it)
 
 ## Why it matters
 
@@ -18,7 +16,9 @@ In a recorded SWE-bench Verified run, a coding agent saw a Django regression tes
 
 ## What we built
 
-Plum is a stateful belief model with 660 learned parameters and 48 values of recurrent state. It reads each structured event once and outputs a probability for each of four requirements. In the browser, you can step through the recorded trace or send your own checks and distractions in the simulator. Inference runs on the device.
+Plum reads structured test evidence by requirement and revision. The browser compares a 660-parameter GRU with an evidence posterior and an eight-event baseline. You can step through the recorded trace or send your own checks and distractions. Inference runs on the device.
+
+The live demo also replays repeated spot checks on the broken Click revision. Plum counts the repeated observation once and keeps verification blocked after the original full check fails. A new revision requires an identified full pass before it can be marked ready. The benchmark and video record the earlier GRU experiment.
 
 The simulated recovery lets you watch Plum return to 50% when a new revision starts, then raise its probability as fresh checks pass. Each requirement has its own state. You can send a Regression check and see that the Build belief stays where it was.
 
