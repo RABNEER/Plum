@@ -2,6 +2,8 @@
 
 A coding agent can finish with green checks after an earlier regression has slipped out of view. Plum is a **660-parameter stateful model** that reads typed events once and estimates whether each original requirement passes.
 
+With the same passing checks at the end of both runs, Plum gave Click’s original regression test a **24.8%** chance of passing before the upstream fix and **96.5%** after. [Test output](submission/Plum-Click-Test.txt)
+
 **[Try the live demo](https://plum-sbm-demo.vercel.app/)** · [PyTorch model](referee.py) · [Method and reproduction](METHOD.md)
 
 ## Try it
@@ -49,5 +51,4 @@ The Avadhanam-inspired training streams interleave checks from all four requirem
 
 The held-out simulation used 256 streams of 192 events with 75% distractors. The Bayes oracle uses the simulator's exact reliability rates of 90% for full checks and 75% for spot checks.
 
-- **Click regression.** The original test failed before the upstream fix and passed after it. Plum scored **24.8% → 96.5%** across two runs with identical trailing evidence. [Test output](submission/Plum-Click-Test.txt)
-- **Recorded Django run.** After the agent changed the failing test, Plum held at **10%** and the eight-event model reached **50%**. The benchmark marked the run unresolved. We mapped the trace to typed events by hand. [Replay and event mapping](REAL_TRACE.md)
+**Recorded Django run.** After the agent changed the failing test, Plum held at **10%** and the eight-event model reached **50%**. The benchmark marked the run unresolved. We mapped the trace to typed events by hand. [Replay and event mapping](REAL_TRACE.md)
