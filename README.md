@@ -11,7 +11,7 @@ In the original GRU experiment, both Click runs ended with the same passing chec
 The Python package includes the trained weights and runs offline on Python 3.10 or newer.
 
 ```sh
-pip install ./python_package
+pip install plum-sbm==0.2.0
 plum demo
 ```
 
