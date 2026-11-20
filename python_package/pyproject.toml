@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=70.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plum-sbm"
+version = "0.1.0"
+description = "An offline stateful model for tracking structured evidence in a stream"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["stateful inference", "gru", "belief tracking", "agent evaluation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.scripts]
+plum = "plum_sbm.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["plum_sbm"]
+
+[tool.setuptools.package-data]
+plum_sbm = ["weights.json", "MODEL_CARD.md"]
