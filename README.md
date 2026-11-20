@@ -1,12 +1,31 @@
 # Plum · The Belief Lab
 
-Plum is a **660-parameter stateful model** that tracks test evidence across a coding agent's run. It reads typed events once and estimates whether the original requirement passes.
+A coding agent can finish with green checks after an earlier regression has slipped out of view. Plum is a **660-parameter stateful model** that reads typed events once and estimates whether each original requirement passes.
 
 **[Try the live demo](https://plum-sbm-demo.vercel.app/)** · [PyTorch model](referee.py) · [Method and reproduction](METHOD.md)
+
+## Try it
+
+The Python package includes the trained weights and runs offline on Python 3.10 or newer.
 
 ```sh
 pip install plum-sbm
 plum demo
+```
+
+```python
+from plum_sbm import Plum
+
+plum = Plum()
+plum.feed("revision", "regression")
+plum.feed("strong_fail", "regression")
+for _ in range(10):
+    plum.feed("noise")
+print(f"{plum.query('regression'):.0%}")  # 10%
+
+plum.feed("revision", "regression")
+plum.feed("strong_pass", "regression")
+print(f"{plum.query('regression'):.0%}")  # 90%
 ```
 
 ## How it works
@@ -22,11 +41,13 @@ flowchart LR
 
 The four vectors share one GRU. A revision clears its vector and resets its probability to 50%. Outdated results leave state unchanged.
 
+The Avadhanam-inspired training streams interleave checks from all four requirements with distractors. A Bayesian simulator supplies a target probability at each step, so the model learns how to combine evidence throughout the stream.
+
 ## What it measured
 
 ![Brier error. Plum 0.11785, Bayes oracle 0.11781, latest-check rule 0.16408, last-eight-events model 0.21113. Lower is better.](assets/plum-brier.svg)
 
-Held-out simulation with 256 streams, 192 events per stream, and 75% distractors. The oracle knows the simulator's test reliability.
+The held-out simulation used 256 streams of 192 events with 75% distractors. The Bayes oracle uses the simulator's exact reliability rates of 90% for full checks and 75% for spot checks.
 
 - **Click regression.** The original test failed before the upstream fix and passed after it. Plum scored **24.8% → 96.5%** across two runs with identical trailing evidence. [Test output](submission/Plum-Click-Test.txt)
-- **Recorded Django run.** After the agent changed the failing test, Plum held at **10%** and the eight-event model reached **50%**. The benchmark marked the run unresolved. [Replay and event mapping](REAL_TRACE.md)
+- **Recorded Django run.** After the agent changed the failing test, Plum held at **10%** and the eight-event model reached **50%**. The benchmark marked the run unresolved. We mapped the trace to typed events by hand. [Replay and event mapping](REAL_TRACE.md)
