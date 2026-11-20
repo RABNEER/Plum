@@ -1,4 +1,6 @@
-# Plum — Independent Test Verdict
+# Plum — Independent Test Verdict (earlier checkpoint)
+
+This report records the evaluation before Plum adopted separate recurrent states for each requirement. The current model routes evidence and resets by requirement. Calibration under different test reliability rates remains an open question. [Current model tests](test_referee.py) · [Published benchmark](referee-results.json)
 
 **Tested:** 20 Nov 2026 · `referee.pt`, `demo/`, `referee.py`, `experiment.py`
 **Method:** unit tests, checkpoint re-evaluation, fresh held-out streams, controlled behavior probes, and the static demo in real Chrome (desktop + 390px mobile).

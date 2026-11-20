@@ -2,9 +2,9 @@
 
 **Ten checks passed. One regression was still broken.** We ran [Click’s own regression test](https://github.com/pallets/click/pull/3299/files) before and after the maintainer’s fix. It failed before the fix and passed after it, even though both runs ended with the same ten passing checks.
 
-**At the staged completion claim, Plum gave the original regression a 24.8% chance of passing before the fix and a 96.5% chance after it.** Both baselines gave identical scores across the two revisions. [See the actual pytest output](submission/Plum-Click-Test.txt)
+**At the staged completion claim, Plum gave the original regression a 24.8% chance of passing before the fix and a 96.5% chance after it.** Both baselines gave identical scores across the two revisions. [See the actual pytest output](https://github.com/RABNEER/Plum/blob/main/submission/Plum-Click-Test.txt)
 
-![Click’s actual test fails before the fix and passes after it. Plum scores the two histories 24.8% and 96.5%.](submission/Plum-Click-Evidence.png)
+![Click’s actual test fails before the fix and passes after it. Plum scores the two histories 24.8% and 96.5%.](https://raw.githubusercontent.com/RABNEER/Plum/main/submission/Plum-Click-Evidence.png)
 
 Plum is an Avadhanam-inspired stateful model that tracks test evidence and flags when a coding agent’s completion claim needs another check.
 
@@ -14,7 +14,7 @@ Run `pip install plum-sbm` and then `plum demo` to try the bundled model offline
 
 ## Why it matters
 
-In a recorded SWE-bench Verified run, a coding agent saw a Django regression test fail, changed the assertion, then submitted its patch after the edited test passed. The benchmark marked the run unresolved. In our hand-mapped replay, **Plum gave the original check a 10% chance of passing**, versus **50%** for the model that saw only the last eight events. [Trace source and mapping](REAL_TRACE.md)
+In a recorded SWE-bench Verified run, a coding agent saw a Django regression test fail, changed the assertion, then submitted its patch after the edited test passed. The benchmark marked the run unresolved. In our hand-mapped replay, **Plum gave the original check a 10% chance of passing**, versus **50%** for the model that saw only the last eight events. [Trace source and mapping](https://github.com/RABNEER/Plum/blob/main/REAL_TRACE.md)
 
 ## What we built
 
