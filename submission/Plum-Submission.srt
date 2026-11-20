@@ -1,0 +1,153 @@
+1
+00:00:00,170 --> 00:00:01,509
+Ten green checks.
+
+2
+00:00:01,509 --> 00:00:03,201
+One bug was still there.
+
+3
+00:00:03,201 --> 00:00:07,513
+On the old version of Click, rendering help for a custom option
+crashed.
+
+4
+00:00:08,208 --> 00:00:11,858
+We ran Click’s own regression on the fix and its parent.
+
+5
+00:00:11,858 --> 00:00:15,002
+Both runs ended with the same passing checks.
+
+6
+00:00:15,002 --> 00:00:19,610
+Then we staged a completion claim and asked Plum about the original
+regression.
+
+7
+00:00:19,610 --> 00:00:20,860
+Before the fix?
+
+8
+00:00:20,860 --> 00:00:22,956
+24.8 percent.
+
+9
+00:00:22,956 --> 00:00:24,219
+After the fix?
+
+10
+00:00:24,219 --> 00:00:26,429
+96.5 percent.
+
+11
+00:00:26,429 --> 00:00:29,680
+Each baseline gave the same score for both.
+
+12
+00:00:30,375 --> 00:00:32,661
+Here’s a recorded Django agent run.
+
+13
+00:00:32,661 --> 00:00:34,883
+The original regression fails.
+
+14
+00:00:34,883 --> 00:00:38,886
+The agent edits the test, sees it pass, and submits.
+
+15
+00:00:38,886 --> 00:00:42,585
+SWE-bench marked the patch unresolved.
+
+16
+00:00:42,585 --> 00:00:44,807
+We mapped selected events by hand.
+
+17
+00:00:44,807 --> 00:00:47,958
+To Plum, the earlier failure still counts.
+
+18
+00:00:48,667 --> 00:00:50,978
+Plum reads each event once.
+
+19
+00:00:50,978 --> 00:00:55,069
+It carries 48 state values across four requirements.
+
+20
+00:00:55,069 --> 00:01:00,258
+A recurrent network with 660 learned parameters weighs the checks.
+
+21
+00:01:00,258 --> 00:01:02,424
+It runs right inside the browser.
+
+22
+00:01:03,125 --> 00:01:05,562
+Avadhanam inspired the training.
+
+23
+00:01:05,562 --> 00:01:11,825
+We interleaved evidence, added distractions, and asked about each
+requirement along the way.
+
+24
+00:01:11,825 --> 00:01:15,120
+The simulator supplied the correct probabilities.
+
+25
+00:01:15,120 --> 00:01:17,488
+The model learned which checks to combine.
+
+26
+00:01:18,208 --> 00:01:23,095
+In this separate simulation, a new revision clears old evidence.
+
+27
+00:01:23,095 --> 00:01:25,431
+Plum returns to 50 percent.
+
+28
+00:01:25,431 --> 00:01:29,535
+A fresh full check passes, and it rises to 90.
+
+29
+00:01:29,535 --> 00:01:32,824
+A follow-up spot check brings it to 96.
+
+30
+00:01:33,542 --> 00:01:38,176
+In our held-out simulation, Plum’s Brier error was point one one
+eight.
+
+31
+00:01:38,176 --> 00:01:41,737
+The eight-event baseline scored point two one one.
+
+32
+00:01:41,737 --> 00:01:47,229
+We tested 256 streams, with three out of four events being
+distractors.
+
+33
+00:01:47,229 --> 00:01:49,319
+The checks had known reliability.
+
+34
+00:01:50,042 --> 00:01:51,191
+Try it yourself.
+
+35
+00:01:51,191 --> 00:01:55,257
+Run pip install plum-sbm, then plum demo.
+
+36
+00:01:55,257 --> 00:01:58,742
+The package includes the weights and runs offline.
+
+37
+00:01:58,742 --> 00:02:03,559
+Open the web demo to replay the Django run, or feed Plum your own
+events.
