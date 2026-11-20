@@ -1,0 +1,136 @@
+{
+  "seed": 42,
+  "steps": 1200,
+  "training_length": 48,
+  "training_distractors": 0.35,
+  "window": 8,
+  "hidden": 48,
+  "hidden_per_channel": 12,
+  "architecture": "shared_gru_with_routed_state",
+  "parameter_count": {
+    "sbm": 660,
+    "window": 10966
+  },
+  "scenarios": [
+    {
+      "events": 48,
+      "distractors": 0.35,
+      "streams": 256,
+      "delayed_queries": 8563,
+      "scores": {
+        "sbm": {
+          "oracle_mse": 1.0408038178866263e-05,
+          "delayed_mse": 7.91123602539301e-06,
+          "brier": 0.1281992495059967,
+          "update_error": 0.002362641040235758,
+          "stay_drift": 0.0,
+          "isolation_drift": 0.0
+        },
+        "window": {
+          "oracle_mse": 0.044927895069122314,
+          "delayed_mse": 0.13316763937473297,
+          "brier": 0.17264939844608307,
+          "update_error": 0.08850894123315811,
+          "stay_drift": 0.034116148948669434,
+          "isolation_drift": 0.031091954559087753
+        },
+        "latest": {
+          "oracle_mse": 0.039848145097494125,
+          "delayed_mse": 0.03838123381137848,
+          "brier": 0.1659533679485321,
+          "update_error": 0.11742474883794785,
+          "stay_drift": 0.0,
+          "isolation_drift": 0.0
+        },
+        "oracle": {
+          "oracle_mse": 0.0,
+          "delayed_mse": 0.0,
+          "brier": 0.1282268464565277,
+          "update_error": 0.0,
+          "stay_drift": 0.0,
+          "isolation_drift": 0.0
+        }
+      }
+    },
+    {
+      "events": 192,
+      "distractors": 0.35,
+      "streams": 256,
+      "delayed_queries": 43755,
+      "scores": {
+        "sbm": {
+          "oracle_mse": 1.3283199223224074e-05,
+          "delayed_mse": 1.1228657967876643e-05,
+          "brier": 0.10069059580564499,
+          "update_error": 0.0025142438244074583,
+          "stay_drift": 0.0,
+          "isolation_drift": 0.0
+        },
+        "window": {
+          "oracle_mse": 0.06409642100334167,
+          "delayed_mse": 0.15002427995204926,
+          "brier": 0.1670193076133728,
+          "update_error": 0.11158253252506256,
+          "stay_drift": 0.03673626855015755,
+          "isolation_drift": 0.033396054059267044
+        },
+        "latest": {
+          "oracle_mse": 0.05473718047142029,
+          "delayed_mse": 0.05191734805703163,
+          "brier": 0.15721715986728668,
+          "update_error": 0.13523046672344208,
+          "stay_drift": 0.0,
+          "isolation_drift": 0.0
+        },
+        "oracle": {
+          "oracle_mse": 0.0,
+          "delayed_mse": 0.0,
+          "brier": 0.10071179270744324,
+          "update_error": 0.0,
+          "stay_drift": 0.0,
+          "isolation_drift": 0.0
+        }
+      }
+    },
+    {
+      "events": 192,
+      "distractors": 0.75,
+      "streams": 256,
+      "delayed_queries": 103305,
+      "scores": {
+        "sbm": {
+          "oracle_mse": 1.0739028766693082e-05,
+          "delayed_mse": 1.1836086741823237e-05,
+          "brier": 0.11784710735082626,
+          "update_error": 0.0023800451308488846,
+          "stay_drift": 0.0,
+          "isolation_drift": 0.0
+        },
+        "window": {
+          "oracle_mse": 0.0933525562286377,
+          "delayed_mse": 0.14450348913669586,
+          "brier": 0.21113191545009613,
+          "update_error": 0.12635807693004608,
+          "stay_drift": 0.025198299437761307,
+          "isolation_drift": 0.021647611632943153
+        },
+        "latest": {
+          "oracle_mse": 0.045261722058057785,
+          "delayed_mse": 0.049285318702459335,
+          "brier": 0.16407926380634308,
+          "update_error": 0.11976814270019531,
+          "stay_drift": 0.0,
+          "isolation_drift": 0.0
+        },
+        "oracle": {
+          "oracle_mse": 0.0,
+          "delayed_mse": 0.0,
+          "brier": 0.11780676990747452,
+          "update_error": 0.0,
+          "stay_drift": 0.0,
+          "isolation_drift": 0.0
+        }
+      }
+    }
+  ]
+}
