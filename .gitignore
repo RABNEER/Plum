@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+build/
+*.egg-info/
+.video-work/
+.deploy-cache/
+dist/
+agentbox.db*
+/submission/*.mp4
+/submission/*.zip
+/submission/Plum-Live-Demo.html
+/submission/before-*/
